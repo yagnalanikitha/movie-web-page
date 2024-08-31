@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Favorites</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem 2% 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom:3px solid transparent;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+        }
+        .logo span {
+            color: #ffd700; /* Gold color for contrast */
+        }
+        .navbar {
+            display: flex;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+            
+        }
+        .navbar a:hover {
+            color: #e0e0e0; /* Light grey for hover effect */
+        }
+        .page {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #e74c3c;
+            background-color: ;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .page h1 {
+            text-align: center;
+            color: #333;
+        }
+        .movies-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .movie-item {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .movie-item h2 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .movie-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .movie-item a:hover {
+            text-decoration: underline;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #ff0000; /* Red color for remove button */
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #cc0000; /* Darker red for hover effect */
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+  
+</head>
+<body>
+    <header class="header">
+        <a class="logo">MOVIES<span> WEB-PAGE</span></a>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="home">HOME</a>
+            <a href="{{ url_for('favorites') }}" class="favorites">Favorites</a>
+        </nav>
+    </header>
+    <div class="page">
+        <h1>My Favorites</h1>
+        <div class="movies-list">
+            {% if favorites %}
+                {% for movie in favorites %}
+                    <div class="movie-item">
+                        <a href="{{ url_for('movie_details', movie_id=movie['id']) }}">
+                            <h2>{{ movie.title }}</h2>
+                        </a>
+                        <form action="{{ url_for('remove_favorite', movie_id=movie['id']) }}" method="post">
+                            <button type="submit" class="btn">Remove</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No favorites added yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

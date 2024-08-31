@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ language_code }} Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #0056b3;
+        }
+        .movies-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted for thumbnails */
+            gap: 15px;
+        }
+        .movie-item {
+            text-align: center;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .movie-item img {
+            width: 100%; /* Full width for the thumbnail */
+            height: 225px; /* Fixed height for thumbnails */
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .movie-item h2 {
+            font-size: 14px; /* Smaller font size for thumbnails */
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .movie-item p {
+            font-size: 12px; /* Smaller font size for thumbnails */
+            color: #777;
+            margin: 0;
+        }
+        .movie-item a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 10px; /* Slightly smaller padding */
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px; /* Smaller font size for thumbnails */
+            transition: background-color 0.3s;
+        }
+        .movie-item a:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ language_code }} Movies</h1>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="javascript:history.back()">Back to Results</a>
+            </nav>
+        </header>
+
+        <section class="movies-list">
+            {% if movies %}
+                {% for movie in movies %}
+                    <div class="movie-item">
+                        <a href="{{ url_for('movie_details', movie_id=movie['id']) }}">
+                            {% if movie['poster_path'] %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ movie['poster_path'] }}" alt="{{ movie['title'] }} poster">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='no_poster_available.png') }}" alt="No poster available">
+                            {% endif %}
+                            <h2>{{ movie['title'] }}</h2>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No movies found for this language.</p>
+            {% endif %}
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Movie Search Application</p>
+        </footer>
+    </div>
+</body>
+</html>
+
+

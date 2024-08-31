@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+        }
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            left: 0;
+            padding: 1rem 2% 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(100px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 5;
+        }
+        .logo {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s ease;
+            underline:none;
+        }
+        .logo:hover {
+            transform: scale(1.1);
+        }
+        .logo span {
+            text-shadow: 0 0 25px #cb3232;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-right: 10%;
+        }
+        .navbar a {
+            font-size: 1em;
+            color: white;
+            margin-left: 1.5rem;
+            font-weight: 300;
+            transition: 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .navbar a:hover,
+        .navbar a.home {
+            color: #e74c3c;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .navbar .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .navbar .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .navbar .dropdown:hover .dropbtn {
+            background-color: #e74c3c;
+        }
+        .page {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        .input-box {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .input-box input {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #fff;
+        }
+        .input-box i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #e74c3c;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/0s-tAscAR04?autoplay=1&mute=1&loop=1&playlist=0s-tAscAR04" frameborder="0" allowfullscreen></iframe>
+        <div class="gradient-overlay"></div>
+    </div>
+    <header class="header">
+        <a class="logo" href="{{ url_for('index') }}">MOVIES<span>   WEB-PAGE</span></a>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="home">HOME</a>
+            <a href="{{ url_for('favorites') }}" class="favorites">Favorites</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Genre</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('movies_by_genre', genre_name='comedy') }}" target="_blank">Comedy</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='romantic') }}" target="_blank">Romantic</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='horror') }}" target="_blank">Horror</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='action') }}" target="_blank">Action</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='drama') }}" target="_blank">Drama</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='sci-fi') }}" target="_blank">Sci-Fi</a>
+                    <a href="{{ url_for('movies_by_genre', genre_name='fantasy') }}" target="_blank">Fantasy</a>
+                </div>
+            </div>
+            <a href="{{ url_for('all_movies') }}" target="_blank">All Movies</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Languages</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('movies_by_language', language_code='hindi') }}" target="_blank">Hindi</a>
+                    <a href="{{ url_for('movies_by_language', language_code='telugu') }}" target="_blank">Telugu</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page">
+        <h1>Movie Search</h1>
+        <form action="{{ url_for('search') }}" method="get">
+            <input type="text" name="query" placeholder="Search for movies">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+

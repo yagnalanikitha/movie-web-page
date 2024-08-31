@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ movie.title }}</title>
+<style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+    }
+    .logo span {
+        color: #ffd700; /* Gold color for contrast */
+    }
+    .navbar {
+        display: flex;
+    }
+    .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 16px;
+        transition: color 0.3s;
+    }
+    .navbar a:hover {
+        color: #e0e0e0; /* Light grey for hover effect */
+    }
+    .page {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .page h1 {
+        text-align: center;
+        color: #333;
+    }
+    .page img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin: 20px 0;
+    }
+    .page p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    .page h3 {
+        font-size: 18px;
+        color: #333;
+        margin-top: 20px;
+    }
+    .page ul {
+        list-style: none;
+        padding: 0;
+    }
+    .page li {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+    .page iframe {
+        display: block;
+        margin: 20px auto;
+        border: none;
+        border-radius: 8px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+    
+</head>
+<body>
+    <header class="header">
+        <a class="logo">MOVIES<span> WEB-PAGE</span></a>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="home">HOME</a>
+            <a href="{{ url_for('favorites') }}" class="favorites">Favorites</a>
+        </nav>
+    </header>
+    <div class="page">
+        <h1>{{ movie.title }}</h1>
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+        <p>{{ movie.overview }}</p>
+        <h3>Cast</h3>
+        <ul>
+            {% for cast_member in movie.credits.cast %}
+                <li>{{ cast_member.name }} as {{ cast_member.character }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Trailer</h3>
+        {% if movie.videos.results %}
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.videos.results[0].key }}" frameborder="0" allowfullscreen></iframe>
+        {% else %}
+            <p>No trailer available</p>
+        {% endif %}
+        <form action="{{ url_for('add_favorite', movie_id=movie.id) }}" method="post">
+            <input type="hidden" name="movie_title" value="{{ movie.title }}">
+            <button type="submit" class="btn">Add to Favorites</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+

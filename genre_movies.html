@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ genre_name }} Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .movie-item {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .movie-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .movie-item h2 {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .movie-item p {
+            font-size: 14px;
+            color: #777;
+        }
+        .movie-item a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .movie-item a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ genre_name }} Movies</h1>
+        <div class="movies-grid">
+            {% for movie in movies %}
+                <div class="movie-item">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <h2>{{ movie.title }}</h2>
+                    <p>Release Date: {{ movie.release_date }}</p>
+                    <a href="{{ url_for('movie_details', movie_id=movie.id) }}">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

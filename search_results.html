@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+        }
+        .logo span {
+            color: #ffd700; /* Gold color for contrast */
+        }
+        .navbar {
+            display: flex;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .navbar a:hover {
+            color: #e0e0e0; /* Light grey for hover effect */
+        }
+        .page {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .page h1 {
+            text-align: center;
+            color: #333;
+        }
+        .movies-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .movie-item {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .movie-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .movie-item h2 {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a class="logo">MOVIES<span> WEB-PAGE</span></a>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="home">HOME</a>
+            <a href="{{ url_for('favorites') }}" class="favorites">Favorites</a>
+        </nav>
+    </header>
+    <div class="page">
+        <h1>Search Results for "{{ query }}"</h1>
+        <div class="movies-list">
+            {% for movie in movies %}
+                <div class="movie-item">
+                    <a href="{{ url_for('movie_details', movie_id=movie['id']) }}">
+                        <img src="https://image.tmdb.org/t/p/w200{{ movie['poster_path'] }}" alt="{{ movie['title'] }}">
+                        <h2>{{ movie['title'] }}</h2>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+  
+
+
