@@ -9,17 +9,17 @@ app.secret_key = 'your_secret_key'  # Secret key for session management
 TMDB_API_KEY = '888ad08f9ddebe86bcf570efc4e7949c'
 TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
-# Initialize session storage for favorites
+# Initializing  for favorites
 def init_favorites():
     if 'favorites' not in session:
         session['favorites'] = []
 
-# Home route
+# Home route index page 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Search movies
+# Searching  movies in seach 
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query')
@@ -29,7 +29,7 @@ def search():
         return render_template('search_results.html', movies=movies, query=query)
     return redirect(url_for('index'))
 
-# Movie details route
+# Movie details 
 @app.route('/movie/<int:movie_id>')
 def movie_details(movie_id):
     response = requests.get(f'{TMDB_BASE_URL}/movie/{movie_id}', params={'api_key': TMDB_API_KEY, 'append_to_response': 'videos,credits'})
@@ -95,6 +95,7 @@ def movies_by_genre(genre_name):
         return render_template('genre_movies.html', movies=movies, genre_name=genre_name.capitalize())
 
     return redirect(url_for('index'))
+    # movies by language 
 @app.route('/language/<string:language_code>')
 def movies_by_language(language_code):
     language_map = {
@@ -106,17 +107,17 @@ def movies_by_language(language_code):
     if language:
         movies = []
         max_retries = 3
-        for page in range(1, 6):  # Fetch up to 5 pages of results
+        for page in range(1, 6): 
             for attempt in range(max_retries):
                 try:
                     response = requests.get(f'{TMDB_BASE_URL}/discover/movie', 
                                             params={'api_key': TMDB_API_KEY, 'with_original_language': language, 'page': page})
-                    response.raise_for_status()  # Raise an error for bad status codes
+                    response.raise_for_status()  
                     movies.extend(response.json().get('results', []))
-                    break  # If successful, break out of retry loop
+                    break  
                 except requests.exceptions.ConnectionError as e:
                     if attempt < max_retries - 1:
-                        time.sleep(2)  # Wait before retrying
+                        time.sleep(2)  
                     else:
                         print(f"Failed to retrieve page {page} for language {language_code}: {e}")
                         return redirect(url_for('index'))
@@ -129,7 +130,7 @@ def movies_by_language(language_code):
 @app.route('/movies')
 def all_movies():
     movies = []
-    for page in range(1, 51):  # 50 pages with 20 results each = 1000 movies
+    for page in range(1, 51): 
         response = requests.get(f'{TMDB_BASE_URL}/discover/movie', 
                                 params={'api_key': TMDB_API_KEY, 'page': page})
         movies.extend(response.json().get('results', []))
